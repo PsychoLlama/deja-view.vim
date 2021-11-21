@@ -15,7 +15,7 @@ func! deja#disk#read(path) abort
     return v:null
   endif
 
-  let l:file_contents = readfile(l:file_path)
+  let l:file_contents = join(readfile(l:file_path), '\n')
   return json_decode(file_contents)
 endfunc
 
