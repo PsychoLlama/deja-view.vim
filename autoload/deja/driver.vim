@@ -17,7 +17,7 @@ endfunc
 " TODO: Add pattern override based on buffer path.
 func! s:get_driver_name(buffer_path) abort
   let l:n = 'deja_save_mode'
-  return get(b:, l:n, get(g:, l:n, 'memory'))
+  return get(b:, l:n, get(g:, l:n, 'disk'))
 endfunc
 
 func! s:warn_of_unknown_driver(driver_name) abort
