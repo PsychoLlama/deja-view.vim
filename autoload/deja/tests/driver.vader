@@ -1,0 +1,33 @@
+Before:
+  unlet! b:deja_save_mode
+  let g:deja_save_mode = 'memory'
+  call deja#memory#clear()
+
+Execute (load memory driver):
+  let deja_save_mode = 'memory'
+  let driver = deja#driver#load('/a/file/path')
+  call driver.write('/memory', { 'driver': 'memory' })
+
+  AssertEqual { 'driver': 'memory' }, deja#memory#read('/memory')
+
+Execute (load disk driver):
+  let deja_save_mode = 'disk'
+  let driver = deja#driver#load('/a/file/path')
+  call driver.write('/disk', { 'driver': 'disk' })
+
+  AssertEqual { 'driver': 'disk' }, deja#disk#read('/disk')
+
+Execute (prioritize buffer over global settings):
+  let g:deja_save_mode = 'memory'
+  let b:deja_save_mode = 'disk'
+  let driver = deja#driver#load('/a/file/path')
+  call driver.write('/disk', { 'driver': 'disk' })
+
+  AssertEqual { 'driver': 'disk' }, deja#disk#read('/disk')
+
+Execute (survive unknown drivers):
+  let g:deja_save_mode = 'ipfs'
+  silent let driver = deja#driver#load('/a/file/path')
+  call driver.write('/memory', { 'driver': 'memory' })
+
+  AssertEqual { 'driver': 'memory' }, deja#memory#read('/memory')
