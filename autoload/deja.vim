@@ -4,7 +4,9 @@ endfunc
 
 func! deja#restore_view() abort
   let l:view = deja#read_view(expand('%:p'))
-  if l:view isnot# v:null
+
+  " If the remembered line number is out of bounds, it's probably wrong.
+  if l:view isnot# v:null && l:view.lnum <= line('$')
     call winrestview(l:view)
   endif
 endfunc
