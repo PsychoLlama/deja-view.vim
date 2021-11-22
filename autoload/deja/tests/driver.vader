@@ -17,6 +17,13 @@ Execute (load disk driver):
 
   AssertEqual { 'driver': 'disk' }, deja#disk#read('/disk')
 
+Execute (load null driver):
+  let deja_save_mode = 'none'
+  let driver = deja#driver#load('/a/file/path')
+  call driver.write('/path', { 'driver': 'none' })
+
+  AssertEqual v:null, driver.read('/path')
+
 Execute (prioritize buffer over global settings):
   let g:deja_save_mode = 'memory'
   let b:deja_save_mode = 'disk'

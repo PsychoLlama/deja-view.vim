@@ -7,6 +7,10 @@ func! deja#driver#load(buffer_path) abort
     return deja#disk#get_driver()
   endif
 
+  if l:driver_name is# 'none'
+    return deja#null#get_driver()
+  endif
+
   if l:driver_name isnot# 'memory'
     call s:warn_of_unknown_driver(l:driver_name)
   endif
@@ -15,7 +19,12 @@ func! deja#driver#load(buffer_path) abort
 endfunc
 
 " TODO: Add pattern override based on buffer path.
+" TODO: Make file type override configurable.
 func! s:get_driver_name(buffer_path) abort
+  if &filetype is# 'terminal' || &filetype is# 'gitcommit'
+    return 'none'
+  endif
+
   let l:n = 'deja_save_mode'
   return get(b:, l:n, get(g:, l:n, 'disk'))
 endfunc
