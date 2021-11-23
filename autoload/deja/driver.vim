@@ -21,7 +21,7 @@ endfunc
 " TODO: Add pattern override based on buffer path.
 " TODO: Make file type override configurable.
 func! s:get_driver_name(buffer_path) abort
-  if &filetype is# 'terminal' || &filetype is# 'gitcommit'
+  if &filetype is# 'gitcommit' || a:buffer_path[0:4] is# 'term:'
     return 'none'
   endif
 
